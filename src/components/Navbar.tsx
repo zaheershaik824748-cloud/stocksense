@@ -5,7 +5,6 @@ import {
   Building2, 
   Bell, 
   Shield, 
-  Sparkles, 
   RotateCcw,
   CheckCircle2,
   ChevronRight,
@@ -15,13 +14,11 @@ import { ActiveTab } from './Sidebar';
 
 interface NavbarProps {
   activeTab: ActiveTab;
-  onOpenDemoModal: () => void;
   onSearchSelect?: (sku: string) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
-  onOpenDemoModal,
   onSearchSelect
 }) => {
   const { user, warehouses, products, getLowStockProducts, resetToDefaultData } = useInventory();
@@ -140,15 +137,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span>{user?.role || 'Staff'}</span>
         </div>
 
-        {/* Demo Simulation Launch Button */}
-        <button
-          onClick={onOpenDemoModal}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-all"
-          title="Run the 4-step example from PDF"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-          <span className="hidden sm:inline">PDF Demo Flow</span>
-        </button>
 
         {/* Reset State Button */}
         <button

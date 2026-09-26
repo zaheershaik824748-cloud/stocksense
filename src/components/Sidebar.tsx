@@ -17,7 +17,6 @@ import {
   ChevronDown,
   ChevronRight,
   ShieldAlert,
-  PlayCircle,
   HelpCircle,
   Users
 } from 'lucide-react';
@@ -39,13 +38,11 @@ export type ActiveTab =
 interface SidebarProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
-  onOpenDemoModal: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
-  setActiveTab,
-  onOpenDemoModal
+  setActiveTab
 }) => {
   const { user, logout, switchRole, getDashboardKPIs, getLowStockProducts } = useInventory();
   const [productsOpen, setProductsOpen] = useState(true);
@@ -72,21 +69,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Demo Scenario Button */}
-      <div className="px-3 pt-3">
-        <button
-          onClick={onOpenDemoModal}
-          className="w-full flex items-center justify-between px-3 py-2 bg-gradient-to-r from-purple-900/60 to-indigo-900/60 hover:from-purple-800/80 hover:to-indigo-800/80 border border-purple-700/50 rounded-xl text-xs font-semibold text-purple-200 transition-all shadow-sm group"
-        >
-          <div className="flex items-center gap-2">
-            <PlayCircle className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
-            <span>PDF Flow Walkthrough</span>
-          </div>
-          <span className="text-[10px] bg-purple-500/20 px-1.5 py-0.5 rounded text-purple-300 border border-purple-500/30">
-            4-Step
-          </span>
-        </button>
-      </div>
 
       {/* Navigation Links */}
       <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-1">
