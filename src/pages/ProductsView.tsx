@@ -58,7 +58,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigateToStockAva
     setSku(`SKU-${Math.floor(1000 + Math.random() * 9000)}`);
     setCategoryId(categories[0]?.id || '');
     setUom('Units');
-    setPrice(35);
+    setPrice(500);
     setReorderMin(15);
     setReorderMax(80);
     setInitialStock(50);
@@ -199,7 +199,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigateToStockAva
                 <th className="py-3 px-4">Product Name</th>
                 <th className="py-3 px-4">Category</th>
                 <th className="py-3 px-4">Unit of Measure</th>
-                <th className="py-3 px-4 text-right">Unit Price</th>
+                <th className="py-3 px-4 text-right">Unit Price (₹)</th>
                 <th className="py-3 px-4 text-right">Total Stock</th>
                 <th className="py-3 px-4">Stock Status</th>
                 <th className="py-3 px-4 text-right">Actions</th>
@@ -239,7 +239,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigateToStockAva
                         {p.uom}
                       </td>
                       <td className="py-3 px-4 text-right font-mono text-slate-700">
-                        ${p.price.toFixed(2)}
+                        ₹{p.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="py-3 px-4 text-right">
                         <span className="font-mono font-bold text-sm text-slate-900">
@@ -379,7 +379,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onNavigateToStockAva
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Unit Price ($)</label>
+                  <label className="block font-bold text-slate-700 mb-1">Unit Price (₹)</label>
                   <input
                     type="number"
                     step="0.01"
