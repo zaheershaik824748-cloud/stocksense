@@ -109,7 +109,6 @@ interface InventoryContextType {
   // Utilities
   dismissNotification: (id: string) => void;
   resetToDefaultData: () => void;
-  runPDFDemoScenario: () => void;
 }
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
@@ -927,99 +926,6 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     ]);
   };
 
-  // Run the complete PDF 4-step walkthrough scenario automatically!
-  const runPDFDemoScenario = () => {
-    // Step 1: Receive 100 kg Steel from Vendor -> Stock: +100
-    const steelProd = products.find((p) => p.sku === 'STL-RAW-100') || products[0];
-    const mainStoreLoc = locations.find((l) => l.code === 'WH1/MAIN-STORE') || locations[0];
-    const prodRackLoc = locations.find((l) => l.code === 'WH2/PROD-RACK') || locations[3];
-
-    // Create & validate Step 1 Receipt
-    const step1Receipt = createReceipt({
-      vendor: 'Odoo Global Vendor Supplies Ltd',
-      destinationWarehouseId: mainStoreLoc.warehouseId,
-      destinationLocationId: mainStoreLoc.id,
-      scheduledDate: new Date().toISOString().slice(0, 10),
-      items: [
-        {
-          id: `ri-demo-1`,
-          productId: steelProd.id,
-          productName: steelProd.name,
-          sku: steelProd.sku,
-          expectedQty: 100,
-          receivedQty: 100,
-          uom: 'kg'
-        }
-      ],
-      notes: 'PDF Step 1: Receive Goods from Vendor (Receive 100 kg Steel -> Stock: +100)'
-    });
-    validateReceipt(step1Receipt.id);
-
-    // Step 2: Internal Transfer: Main Store -> Production Rack (Stock unchanged in total, new location updated)
-    const step2Transfer = createTransfer({
-      sourceWarehouseId: mainStoreLoc.warehouseId,
-      sourceLocationId: mainStoreLoc.id,
-      destWarehouseId: prodRackLoc.warehouseId,
-      destLocationId: prodRackLoc.id,
-      scheduledDate: new Date().toISOString().slice(0, 10),
-      items: [
-        {
-          id: `ti-demo-2`,
-          productId: steelProd.id,
-          productName: steelProd.name,
-          sku: steelProd.sku,
-          quantity: 40,
-          uom: 'kg'
-        }
-      ],
-      notes: 'PDF Step 2: Move to production rack (Internal transfer: Main Store -> Production Rack)'
-    });
-    validateTransfer(step2Transfer.id);
-
-    // Step 3: Deliver finished goods (Deliver 20 steel -> Stock: -20)
-    const step3Delivery = createDelivery({
-      customer: 'Industrial Fabrication Clients',
-      sourceWarehouseId: prodRackLoc.warehouseId,
-      sourceLocationId: prodRackLoc.id,
-      scheduledDate: new Date().toISOString().slice(0, 10),
-      items: [
-        {
-          id: `di-demo-3`,
-          productId: steelProd.id,
-          productName: steelProd.name,
-          sku: steelProd.sku,
-          demandQty: 20,
-          pickedQty: 20,
-          packedQty: 20,
-          uom: 'kg'
-        }
-      ],
-      notes: 'PDF Step 3: Deliver finished goods (Deliver 20 steel -> Stock: -20)'
-    });
-    validateDelivery(step3Delivery.id);
-
-    // Step 4: Adjust damaged items (3 kg steel damaged -> Stock: -3)
-    const currentProdRackQty = getProductStockByLocation(steelProd.id, prodRackLoc.id);
-    const step4Adjustment = createAdjustment({
-      warehouseId: prodRackLoc.warehouseId,
-      locationId: prodRackLoc.id,
-      productId: steelProd.id,
-      productName: steelProd.name,
-      sku: steelProd.sku,
-      uom: 'kg',
-      recordedQty: currentProdRackQty,
-      countedQty: Math.max(0, currentProdRackQty - 3),
-      reason: 'Damaged Items',
-      notes: 'PDF Step 4: Adjust damaged items (3 kg steel damaged -> Stock: -3)'
-    });
-    validateAdjustment(step4Adjustment.id);
-
-    addNotification(
-      'success',
-      'PDF 4-Step Scenario Completed!',
-      'Executed: 1. Receive 100 kg steel (+100) -> 2. Transfer to Production Rack -> 3. Deliver 20 kg (-20) -> 4. Adjust 3 kg damaged (-3). Check the Stock Ledger!'
-    );
-  };
 
   return (
     <InventoryContext.Provider
@@ -1071,8 +977,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         updateProfile,
         switchRole,
         dismissNotification,
-        resetToDefaultData,
-        runPDFDemoScenario
+        resetToDefaultData
       }}
     >
       {children}

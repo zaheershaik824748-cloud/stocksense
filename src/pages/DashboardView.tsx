@@ -15,7 +15,6 @@ import {
   Clock, 
   ChevronRight,
   TrendingDown,
-  Sparkles,
   ArrowRight
 } from 'lucide-react';
 import { StatusBadge } from '../components/StatusBadge';
@@ -24,10 +23,9 @@ import { ActiveTab } from '../components/Sidebar';
 
 interface DashboardViewProps {
   onNavigate: (tab: ActiveTab) => void;
-  onOpenDemoModal: () => void;
 }
 
-export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigate, onOpenDemoModal }) => {
+export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigate }) => {
   const {
     getDashboardKPIs,
     getLowStockProducts,
@@ -157,10 +155,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigate, onOpen
       {/* Top Banner / Welcome with Quick PDF Scenario Trigger */}
       <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-purple-800/40">
         <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-semibold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-            Odoo Problem Statement Reference Implementation
-          </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Centralized Stock & Warehouse Operations
           </h2>
@@ -170,13 +164,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigate, onOpen
         </div>
 
         <div className="relative z-10 flex flex-wrap items-center gap-3 shrink-0">
-          <button
-            onClick={onOpenDemoModal}
-            className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold rounded-2xl shadow-lg transition-all transform hover:-translate-y-0.5 text-xs sm:text-sm"
-          >
-            <Sparkles className="w-4 h-4 text-yellow-300" />
-            Run 4-Step Flow Walkthrough
-          </button>
           <button
             onClick={() => onNavigate('ledger')}
             className="inline-flex items-center gap-2 px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl backdrop-blur-md transition-all text-xs sm:text-sm"

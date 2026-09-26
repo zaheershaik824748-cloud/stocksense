@@ -4,7 +4,6 @@ import { Sidebar, ActiveTab } from './components/Sidebar';
 import { Navbar } from './components/Navbar';
 import { LowStockBanner } from './components/LowStockBanner';
 import { NotificationToast } from './components/NotificationToast';
-import { DemoScenarioModal } from './components/DemoScenarioModal';
 
 // Pages
 import { DashboardView } from './pages/DashboardView';
@@ -24,7 +23,6 @@ import { AuthView } from './pages/AuthView';
 const MainAppContent: React.FC = () => {
   const { user } = useInventory();
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   // If user is not authenticated, show sign up / login / OTP reset view
   if (!user) {
@@ -37,7 +35,6 @@ const MainAppContent: React.FC = () => {
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onOpenDemoModal={() => setIsDemoModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -51,7 +48,6 @@ const MainAppContent: React.FC = () => {
         {/* Top Navbar */}
         <Navbar
           activeTab={activeTab}
-          onOpenDemoModal={() => setIsDemoModalOpen(true)}
           onSearchSelect={(sku) => {
             setActiveTab('products');
           }}
@@ -62,7 +58,6 @@ const MainAppContent: React.FC = () => {
           {activeTab === 'dashboard' && (
             <DashboardView
               onNavigate={(tab) => setActiveTab(tab)}
-              onOpenDemoModal={() => setIsDemoModalOpen(true)}
             />
           )}
 
@@ -95,13 +90,6 @@ const MainAppContent: React.FC = () => {
           {activeTab === 'profile' && <ProfileView />}
         </main>
       </div>
-
-      {/* Live PDF Flow Simulation Modal */}
-      <DemoScenarioModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-        onViewLedger={() => setActiveTab('ledger')}
-      />
 
       {/* Floating System Notifications */}
       <NotificationToast />
